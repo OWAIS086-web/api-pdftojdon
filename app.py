@@ -1,3 +1,21 @@
+"""
+Module: PDF Data Extractor
+
+This module provides a Flask web service that allows users to upload a PDF file via a URL. The service will then extract key-value pairs and table data from the PDF and return the results in JSON format.
+
+Dependencies:
+- os
+- re
+- json
+- requests
+- pdfplumber
+- Flask
+- werkzeug
+
+Author: Dummy Author
+Version: 1.0
+"""
+
 import os
 import re
 import json
@@ -10,7 +28,8 @@ app = Flask(__name__)
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'pdf'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-os.makedirs(UPLOAD_FOLDER, exist_ok=True) 
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
 def allowed_file(filename):
     """Check if the file has an allowed extension."""
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -56,7 +75,6 @@ def download_file(url, save_path):
     else:
         raise Exception(f"Failed to download file, status code {response.status_code}. URL: {url}")
 
-
 @app.route('/upload', methods=['POST'])
 def upload_file():
     """Handle file URL and return extracted data in JSON format."""
@@ -89,3 +107,6 @@ def upload_file():
 
     return jsonify(output_data), 200
 
+@app.route("/")
+def hello_world():
+    return "Hello, World!"
